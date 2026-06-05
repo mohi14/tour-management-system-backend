@@ -3,7 +3,7 @@ import httpStatus from "http-status-codes";
 
 const notFound = (req: Request, res: Response) => {
   res.status(httpStatus.NOT_FOUND).json({
-    succes: false,
+    success: false,
     message: "Route Not Found",
   });
 };

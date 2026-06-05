@@ -8,8 +8,12 @@ const createUser = async (payload: Partial<IUser>) => {
 };
 
 const getAllUsers = async () => {
-  const users = await User.find({});
-  const totalUsers = await User.countDocuments();
+  //   const users = await User.find({});
+  //   const totalUsers = await User.countDocuments();
+  const [users, totalUsers] = await Promise.all([
+    User.find({}),
+    User.countDocuments(),
+  ]);
   return {
     data: users,
     meta: {
