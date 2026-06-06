@@ -1,28 +1,30 @@
 import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
 interface EnvConfig {
-    PORT: string,
-    DB_URL: string,
-    NODE_ENV: "development" | "production"
+  PORT: string;
+  DB_URL: string;
+  NODE_ENV: "development" | "production";
+  BCRYPT_SALT_ROUND: string;
 }
 
 const loadEnvVariables = (): EnvConfig => {
-    const requiredEnvVariables: string[] = ["PORT", "DB_URL", "NODE_ENV"];
+  const requiredEnvVariables: string[] = ["PORT", "DB_URL", "NODE_ENV"];
 
-    requiredEnvVariables.forEach(key => {
-        if (!process.env[key]) {
-            throw new Error(`Missing require environment variabl ${key}`)
-        }
-    })
-
-    return {
-        PORT: process.env.PORT as string,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        DB_URL: process.env.DB_URL!,
-        NODE_ENV: process.env.NODE_ENV as "development" | "production"
+  requiredEnvVariables.forEach((key) => {
+    if (!process.env[key]) {
+      throw new Error(`Missing require environment variabl ${key}`);
     }
-}
+  });
 
-export const envVars = loadEnvVariables()
+  return {
+    PORT: process.env.PORT as string,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    DB_URL: process.env.DB_URL!,
+    NODE_ENV: process.env.NODE_ENV as "development" | "production",
+    BCRYPT_SALT_ROUND: process.env.BCRYPT_SALT_ROUND as string,
+  };
+};
+
+export const envVars = loadEnvVariables();

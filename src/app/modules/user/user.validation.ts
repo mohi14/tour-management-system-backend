@@ -36,7 +36,6 @@ export const createUserZodSchema = z.object({
     .optional(),
 });
 
-
 export const updateUserZodSchema = z.object({
   name: z
     .string({ error: "Name must be string" })
