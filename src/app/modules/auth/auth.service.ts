@@ -3,7 +3,7 @@ import httpStatus from "http-status-codes";
 import AppError from "../../errorHelpers/AppError";
 import { IUser } from "../user/user.interface";
 import { User } from "../user/user.model";
-import { createUserToken } from "../../utils/userTokens";
+import { createNewAccessTokenWithRefreshToken, createUserToken } from "../../utils/userTokens";
 
 const credentialsLogin = async (payload: Partial<IUser>) => {
   const { email, password } = payload;
@@ -41,6 +41,17 @@ const credentialsLogin = async (payload: Partial<IUser>) => {
 
 //user - login - token (email, role, _id) - booking / payment / booking / payment cancel - token
 
+const getNewAccessToken = async (refreshToken: string) => {
+    const newAccessToken = await createNewAccessTokenWithRefreshToken(refreshToken)
+
+    return {
+        accessToken: newAccessToken
+    }
+
+}
+
+
 export const AuthServices = {
   credentialsLogin,
+  getNewAccessToken
 };
