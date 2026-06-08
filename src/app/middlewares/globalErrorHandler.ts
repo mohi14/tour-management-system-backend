@@ -5,6 +5,7 @@ import { handlerDuplicateError } from "../helpers/handleDuplicateError";
 import { handleCastError } from "../helpers/handleCastError";
 import { handlerValidationError } from "../helpers/handlerValidationError";
 import { TErrorSources } from "../interfaces/error.types";
+import { handlerZodError } from "../helpers/handlerZodError";
 
 export const globalErrorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,6 +32,15 @@ export const globalErrorHandler = (
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
   }
+
+  // Zod Error
+      else if (error.name === "ZodError") {
+        const simplifiedError = handlerZodError(error)
+        statusCode = simplifiedError.statusCode
+        message = simplifiedError.message
+        errorSources = simplifiedError.errorSources as TErrorSources[]
+    }
+
 
   //Mongoose Validation Error
   else if (error.name === "ValidationError") {
