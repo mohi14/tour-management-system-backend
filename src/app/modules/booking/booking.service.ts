@@ -101,8 +101,31 @@ const createBooking = async (payload: Partial<IBooking>, userId: string) => {
 
 // Frontend(localhost:5173) - User - Tour - Booking (Pending) - Payment(Unpaid) -> SSLCommerz Page -> Payment Fail / Cancel -> Backend(localhost:5000) -> Update Payment(FAIL / CANCEL) & Booking(FAIL / CANCEL) -> redirect to frontend -> Frontend(localhost:5173/payment/cancel or localhost:5173/payment/fail)
 
+const getUserBookings = async () => {
+
+    return {}
+};
+
+const getBookingById = async () => {
+    return {}
+};
+
+const updateBookingStatus = async (
+
+) => {
+
+    return {}
+};
+
+const getAllBookings = async () => {
+
+    return {}
+};
 
 export const BookingService = {
     createBooking,
- 
+    getUserBookings,
+    getBookingById,
+    updateBookingStatus,
+    getAllBookings,
 };
