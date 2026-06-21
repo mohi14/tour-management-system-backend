@@ -6,8 +6,9 @@ import { handleCastError } from "../helpers/handleCastError";
 import { handlerValidationError } from "../helpers/handlerValidationError";
 import { TErrorSources } from "../interfaces/error.types";
 import { handlerZodError } from "../helpers/handlerZodError";
+import { deleteImageFromCLoudinary } from "../config/cloudinary.config";
 
-export const globalErrorHandler = (
+export const globalErrorHandler = async(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error: any,
   req: Request,
@@ -15,6 +16,24 @@ export const globalErrorHandler = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction,
 ) => {
+  if (envVars.NODE_ENV === "development") {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+
+  //if any error happened during file upload, file will be deleted from the cloudinary 
+  if (req.file) {
+    await deleteImageFromCLoudinary(req.file.path);
+  }
+
+  if (req.files && Array.isArray(req.files) && req.files.length) {
+    const imageUrls = (req.files as Express.Multer.File[]).map(
+      (file) => file.path,
+    );
+
+    await Promise.all(imageUrls.map((url) => deleteImageFromCLoudinary(url)));
+  }
+
   let errorSources: TErrorSources[] = [];
   let statusCode = 500;
   let message = "Something Went Wrong!!";
@@ -34,13 +53,12 @@ export const globalErrorHandler = (
   }
 
   // Zod Error
-      else if (error.name === "ZodError") {
-        const simplifiedError = handlerZodError(error)
-        statusCode = simplifiedError.statusCode
-        message = simplifiedError.message
-        errorSources = simplifiedError.errorSources as TErrorSources[]
-    }
-
+  else if (error.name === "ZodError") {
+    const simplifiedError = handlerZodError(error);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorSources = simplifiedError.errorSources as TErrorSources[];
+  }
 
   //Mongoose Validation Error
   else if (error.name === "ValidationError") {
