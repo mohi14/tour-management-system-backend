@@ -5,7 +5,6 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { JwtPayload } from "jsonwebtoken";
 
-
 const createUser = catchAsync(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async (req: Request, res: Response, next: NextFunction) => {
@@ -32,7 +31,11 @@ const updateUser = catchAsync(
     const verifiedToken = req.user;
     const payload = req.body;
 
-    const user = await UserServices.updateUser(userId, payload, verifiedToken as JwtPayload);
+    const user = await UserServices.updateUser(
+      userId,
+      payload,
+      verifiedToken as JwtPayload,
+    );
 
     sendResponse(res, {
       success: true,
@@ -53,7 +56,27 @@ const getAllUsers = catchAsync(
       statusCode: httpStatus.OK,
       message: "All Users Retrieved Successfully",
       data: result.data,
-      meta: result.meta,
+      // meta: result.meta,
+    });
+  },
+);
+
+const getMe = catchAsync(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async (req: Request, res: Response, next: NextFunction) => {
+    const decodedToken = req.user as JwtPayload;
+    const result = await UserServices.getMe(decodedToken.userId);
+
+    // res.status(httpStatus.OK).json({
+    //     success: true,
+    //     message: "All Users Retrieved Successfully",
+    //     data: users
+    // })
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.CREATED,
+      message: "Your profile Retrieved Successfully",
+      data: result.data,
     });
   },
 );
@@ -62,4 +85,5 @@ export const UserControllers = {
   createUser,
   getAllUsers,
   updateUser,
+  getMe,
 };
