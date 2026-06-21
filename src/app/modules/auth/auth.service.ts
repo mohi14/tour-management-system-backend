@@ -54,21 +54,27 @@ const getNewAccessToken = async (refreshToken: string) => {
 
 }
 
-const resetPassword = async (oldPassword: string, newPassword: string, decodedToken: JwtPayload) => {
-
-    const user = await User.findById(decodedToken.userId) 
-
-    const isOldPasswordMatch = await bcrypt.compare(oldPassword, user!.password as string)
-    if (!isOldPasswordMatch) {
-        throw new AppError(httpStatus.UNAUTHORIZED, "Old Password does not match");
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const resetPassword = async (payload: Record<string, any>, decodedToken: JwtPayload) => {
+    if (payload.id != decodedToken.userId) {
+        throw new AppError(401, "You can not reset your password")
     }
 
-    user!.password = await bcrypt.hash(newPassword, Number(envVars.BCRYPT_SALT_ROUND))
+    const isUserExist = await User.findById(decodedToken.userId)
+    if (!isUserExist) {
+        throw new AppError(401, "User does not exist")
+    }
 
-    user!.save();
+    const hashedPassword = await bcrypt.hash(
+        payload.newPassword,
+        Number(envVars.BCRYPT_SALT_ROUND)
+    )
 
+    isUserExist.password = hashedPassword;
 
+    await isUserExist.save()
 }
+
 
 const setPassword = async (userId: string, plainPassword: string) => {
     const user = await User.findById(userId);
@@ -144,6 +150,21 @@ const forgotPassword = async (email: string) => {
      * http://localhost:5173/reset-password?id=687f310c724151eb2fcf0c41&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODdmMzEwYzcyNDE1MWViMmZjZjBjNDEiLCJlbWFpbCI6InNhbWluaXNyYXI2QGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzUzMTY2MTM3LCJleHAiOjE3NTMxNjY3Mzd9.LQgXBmyBpEPpAQyPjDNPL4m2xLF4XomfUPfoxeG0MKg
      */
 }
+const changePassword = async (oldPassword: string, newPassword: string, decodedToken: JwtPayload) => {
+
+    const user = await User.findById(decodedToken.userId)
+
+    const isOldPasswordMatch = await bcrypt.compare(oldPassword, user!.password as string)
+    if (!isOldPasswordMatch) {
+        throw new AppError(httpStatus.UNAUTHORIZED, "Old Password does not match");
+    }
+
+    user!.password = await bcrypt.hash(newPassword, Number(envVars.BCRYPT_SALT_ROUND))
+
+    user!.save();
+
+
+}
 
 export const AuthServices = {
   credentialsLogin,
@@ -151,4 +172,5 @@ export const AuthServices = {
   resetPassword,
   setPassword,
   forgotPassword,
+  changePassword
 };

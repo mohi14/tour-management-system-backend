@@ -119,11 +119,9 @@ const setPassword = catchAsync(async (req: Request, res: Response, next: NextFun
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const resetPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const newPassword = req.body.newPassword;
-    const oldPassword = req.body.oldPassword;
     const decodedToken = req.user
 
-    await AuthServices.resetPassword(oldPassword, newPassword, decodedToken as JwtPayload);
+    await AuthServices.resetPassword(req.body, decodedToken as JwtPayload);
 
     sendResponse(res, {
         success: true,
@@ -132,6 +130,7 @@ const resetPassword = catchAsync(async (req: Request, res: Response, next: NextF
         data: null,
     })
 })
+
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const googleCallbackController = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -172,6 +171,22 @@ const forgotPassword = catchAsync(async (req: Request, res: Response, next: Next
     })
 })
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const changePassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    const newPassword = req.body.newPassword;
+    const oldPassword = req.body.oldPassword;
+    const decodedToken = req.user
+
+    await AuthServices.changePassword(oldPassword, newPassword, decodedToken as JwtPayload);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Password Changed Successfully",
+        data: null,
+    })
+})
 
 
 export const AuthControllers = {
@@ -182,5 +197,6 @@ export const AuthControllers = {
   googleCallbackController,
   setPassword,
   forgotPassword,
+  changePassword
   
 };
