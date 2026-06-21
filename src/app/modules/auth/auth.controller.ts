@@ -101,6 +101,22 @@ const logout = catchAsync(
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+const setPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    const decodedToken = req.user as JwtPayload
+    const { password } = req.body;
+
+    await AuthServices.setPassword(decodedToken.userId, password);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Password Changed Successfully",
+        data: null,
+    })
+})
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const resetPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
     const newPassword = req.body.newPassword;
@@ -147,6 +163,7 @@ export const AuthControllers = {
   getNewAccessToken,
   logout,
   resetPassword,
-  googleCallbackController
+  googleCallbackController,
+  setPassword,
   
 };
