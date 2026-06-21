@@ -11,6 +11,7 @@ router.post("/refresh-token", AuthControllers.getNewAccessToken)
 router.post("/logout",AuthControllers.logout)
 router.post("/set-password", checkAuth(...Object.values(Role)), AuthControllers.setPassword)
 router.post("/reset-password", checkAuth(...Object.values(Role)), AuthControllers.resetPassword)
+router.post("/forgot-password", AuthControllers.forgotPassword)
 
 //  /booking -> /login -> succesful google login -> /booking frontend
 // /login -> succesful google login -> / frontend
