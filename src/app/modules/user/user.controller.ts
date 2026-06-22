@@ -81,9 +81,24 @@ const getMe = catchAsync(
   },
 );
 
+const getSingleUser = catchAsync(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const result = await UserServices.getSingleUser(id as string);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.CREATED,
+      message: "User Retrieved Successfully",
+      data: result.data,
+    });
+  },
+);
+
 export const UserControllers = {
   createUser,
   getAllUsers,
   updateUser,
   getMe,
+  getSingleUser,
 };
