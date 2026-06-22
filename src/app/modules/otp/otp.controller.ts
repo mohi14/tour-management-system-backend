@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { OTPService } from "./otp.service";
@@ -13,6 +14,7 @@ const sendOTP = catchAsync(async (req: Request, res: Response) => {
         data: null,
     });
 })
+
 
 export const OTPController = {
     sendOTP,
