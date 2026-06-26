@@ -8,8 +8,8 @@ import { IDivision } from "./division.interface";
 const createDivision = catchAsync(async (req: Request, res: Response) => {
   const payload: IDivision = {
     ...req.body,
-    thumbnail: req.file?.path
-  }
+    thumbnail: req.file?.path,
+  };
   const result = await DivisionService.createDivision(payload);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
@@ -20,13 +20,16 @@ const createDivision = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllDivisions = catchAsync(async (req: Request, res: Response) => {
-  const result = await DivisionService.getAllDivisions();
+  const query = req.query;
+  const result = await DivisionService.getAllDivisions(
+    query as Record<string, string>,
+  );
   sendResponse(res, {
-    statusCode: httpStatus.OK,
+    statusCode: 200,
     success: true,
     message: "Divisions retrieved",
     data: result.data,
-    // meta: result.meta,
+    meta: result.meta,
   });
 });
 
@@ -43,10 +46,10 @@ const getSingleDivision = catchAsync(async (req: Request, res: Response) => {
 
 const updateDivision = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const payload: IDivision={
+  const payload: IDivision = {
     ...req.body,
-    thumbnail:req.file?.path
-  }
+    thumbnail: req.file?.path,
+  };
 
   const result = await DivisionService.updateDivision(id, payload);
   sendResponse(res, {
@@ -69,9 +72,9 @@ const deleteDivision = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const DivisionController = {
-    createDivision,
-    getAllDivisions,
-    getSingleDivision,
-    updateDivision,
-    deleteDivision,
+  createDivision,
+  getAllDivisions,
+  getSingleDivision,
+  updateDivision,
+  deleteDivision,
 };
