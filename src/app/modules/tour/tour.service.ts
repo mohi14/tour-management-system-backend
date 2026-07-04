@@ -183,10 +183,16 @@ const updateTour = async (id: string, payload: Partial<ITour>) => {
 };
 
 const deleteTour = async (id: string) => {
+   const existingTour = await Tour.findById(id);
+  
+  if (!existingTour) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Tour not found.");
+  }
   return await Tour.findByIdAndDelete(id);
 };
 
 const createTourType = async (payload: ITourType) => {
+  
   const existingTourType = await TourType.findOne({ name: payload.name });
 
   if (existingTourType) {
@@ -211,6 +217,7 @@ const updateTourType = async (id: string, payload: ITourType) => {
 };
 const deleteTourType = async (id: string) => {
   const existingTourType = await TourType.findById(id);
+  
   if (!existingTourType) {
     throw new AppError(httpStatus.BAD_REQUEST, "Tour type not found.");
   }
