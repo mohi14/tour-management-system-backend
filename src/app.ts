@@ -7,7 +7,7 @@ import { envVars } from "./app/config/env";
 import expressSession from "express-session";
 import passport from "passport";
 import cookieParser from "cookie-parser";
-import path from "path";
+// import path from "path";
 import "./app/config/passport";
 
 const app = express();
