@@ -143,6 +143,10 @@ const updateTour = (id, payload) => __awaiter(void 0, void 0, void 0, function* 
     return updatedTour;
 });
 const deleteTour = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const existingTour = yield tour_model_1.Tour.findById(id);
+    if (!existingTour) {
+        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "Tour not found.");
+    }
     return yield tour_model_1.Tour.findByIdAndDelete(id);
 });
 const createTourType = (payload) => __awaiter(void 0, void 0, void 0, function* () {
