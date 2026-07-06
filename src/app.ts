@@ -33,13 +33,13 @@ app.use(cors({
 app.use("/api/v1", router);
 
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "app/utils/templates"));
-// app.get("/", (req: Request, res: Response) => {
-//   res.status(200).json({
-//     message: "Welcome to Tour Management System Backend",
-//   });
-// });
+// app.set("view engine", "ejs");
+// app.set("views", path.join(__dirname, "app/utils/templates"));
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).json({
+    message: "Welcome to Tour Management System Backend",
+  });
+});
 
 app.get("/", (req: Request, res: Response) => {
   res.render("home");
