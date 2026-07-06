@@ -13,6 +13,7 @@ import path from "path";
 import "./app/config/passport";
 
 const app = express();
+const viewsDirectory = path.join(process.cwd(), "src/app/utils/templates");
 
 app.use(expressSession({
     secret: envVars.EXPRESS_SESSION_SECRET,
@@ -53,7 +54,7 @@ app.use("/api/v1", router);
 
 
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "app/utils/templates"));
+app.set("views", viewsDirectory);
 // app.get("/", (req: Request, res: Response) => {
 //   res.status(200).json({
 //     message: "Welcome to Tour Management System Backend",
