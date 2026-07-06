@@ -66,8 +66,8 @@ const getAllTourTypes = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(voi
     });
 }));
 const createTourType = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const payload = req.body;
-    const result = yield tour_service_1.TourService.createTourType(payload);
+    const { name } = req.body;
+    const result = yield tour_service_1.TourService.createTourType(name);
     (0, sendResponse_1.sendResponse)(res, {
         statusCode: 201,
         success: true,

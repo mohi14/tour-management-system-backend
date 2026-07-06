@@ -29,14 +29,13 @@ const createDivision = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void
     });
 }));
 const getAllDivisions = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = req.query;
-    const result = yield division_service_1.DivisionService.getAllDivisions(query);
+    const result = yield division_service_1.DivisionService.getAllDivisions();
     (0, sendResponse_1.sendResponse)(res, {
-        statusCode: 200,
+        statusCode: http_status_codes_1.default.OK,
         success: true,
         message: "Divisions retrieved",
         data: result.data,
-        meta: result.meta,
+        // meta: result.meta,
     });
 }));
 const getSingleDivision = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

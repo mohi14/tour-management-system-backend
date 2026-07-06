@@ -30,8 +30,6 @@ const user_interface_1 = require("./user.interface");
 const user_model_1 = require("./user.model");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const env_1 = require("../../config/env");
-const QueryBuilder_1 = require("../../utils/QueryBuilder");
-const user_constant_1 = require("./user.constant");
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload, rest = __rest(payload, ["email", "password"]);
     const isUserExist = yield user_model_1.User.findOne({ email });
@@ -87,21 +85,18 @@ const updateUser = (userId, payload, decodedToken) => __awaiter(void 0, void 0, 
     });
     return newUpdatedUser;
 });
-const getAllUsers = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const queryBuilder = new QueryBuilder_1.QueryBuilder(user_model_1.User.find(), query);
-    const usersData = queryBuilder
-        .filter()
-        .search(user_constant_1.userSearchableFields)
-        .sort()
-        .fields()
-        .paginate();
-    const [data, meta] = yield Promise.all([
-        usersData.build(),
-        queryBuilder.getMeta()
+const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
+    //   const users = await User.find({});
+    //   const totalUsers = await User.countDocuments();
+    const [users, totalUsers] = yield Promise.all([
+        user_model_1.User.find({}),
+        user_model_1.User.countDocuments(),
     ]);
     return {
-        data,
-        meta
+        data: users,
+        meta: {
+            total: totalUsers,
+        },
     };
 });
 const getMe = (userId) => __awaiter(void 0, void 0, void 0, function* () {

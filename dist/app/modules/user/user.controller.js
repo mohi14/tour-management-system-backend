@@ -50,14 +50,13 @@ const updateUser = (0, catchAsync_1.catchAsync)(
 const getAllUsers = (0, catchAsync_1.catchAsync)(
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const query = req.query;
-    const result = yield user_service_1.UserServices.getAllUsers(query);
+    const result = yield user_service_1.UserServices.getAllUsers();
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
-        statusCode: http_status_codes_1.default.CREATED,
+        statusCode: http_status_codes_1.default.OK,
         message: "All Users Retrieved Successfully",
         data: result.data,
-        meta: result.meta
+        // meta: result.meta,
     });
 }));
 const getMe = (0, catchAsync_1.catchAsync)(
