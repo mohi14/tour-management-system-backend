@@ -7,7 +7,9 @@ import { envVars } from "./app/config/env";
 import expressSession from "express-session";
 import passport from "passport";
 import cookieParser from "cookie-parser";
-// import path from "path";
+import path from "path";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./app/config/swagger";
 import "./app/config/passport";
 
 const app = express();
@@ -30,16 +32,20 @@ app.use(cors({
     credentials: true
 }))
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  explorer: true,
+}));
+
 app.use("/api/v1", router);
 
 
-// app.set("view engine", "ejs");
-// app.set("views", path.join(__dirname, "app/utils/templates"));
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({
-    message: "Welcome to Tour Management System Backend",
-  });
-});
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "app/utils/templates"));
+// app.get("/", (req: Request, res: Response) => {
+//   res.status(200).json({
+//     message: "Welcome to Tour Management System Backend",
+//   });
+// });
 
 app.get("/", (req: Request, res: Response) => {
   res.render("home");
