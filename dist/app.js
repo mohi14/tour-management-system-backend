@@ -13,6 +13,8 @@ const express_session_1 = __importDefault(require("express-session"));
 const passport_1 = __importDefault(require("passport"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const path_1 = __importDefault(require("path"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const swagger_1 = require("./app/config/swagger");
 require("./app/config/passport");
 const app = (0, express_1.default)();
 app.use((0, express_session_1.default)({
@@ -29,6 +31,9 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)({
     origin: env_1.envVars.FRONTEND_URL,
     credentials: true
+}));
+app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec, {
+    explorer: true,
 }));
 app.use("/api/v1", routes_1.router);
 app.set("view engine", "ejs");

@@ -8,6 +8,8 @@ import expressSession from "express-session";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import path from "path";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./app/config/swagger";
 import "./app/config/passport";
 
 const app = express();
@@ -29,6 +31,10 @@ app.use(cors({
     origin: envVars.FRONTEND_URL,
     credentials: true
 }))
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  explorer: true,
+}));
 
 app.use("/api/v1", router);
 
