@@ -32,9 +32,15 @@ app.use((0, cors_1.default)({
     origin: env_1.envVars.FRONTEND_URL,
     credentials: true
 }));
-app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec, {
-    explorer: true,
-}));
+const enableSwaggerDocs = env_1.envVars.NODE_ENV !== "production" || process.env.ENABLE_SWAGGER === "true";
+app.get("/api-docs.json", (_req, res) => {
+    res.json(swagger_1.swaggerSpec);
+});
+if (enableSwaggerDocs) {
+    app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec, {
+        explorer: true,
+    }));
+}
 app.use("/api/v1", routes_1.router);
 app.set("view engine", "ejs");
 app.set("views", path_1.default.join(__dirname, "app/utils/templates"));

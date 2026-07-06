@@ -32,9 +32,22 @@ app.use(cors({
     credentials: true
 }))
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  explorer: true,
-}));
+const enableSwaggerDocs =
+  envVars.NODE_ENV !== "production" || process.env.ENABLE_SWAGGER === "true";
+
+app.get("/api-docs.json", (_req, res) => {
+  res.json(swaggerSpec);
+});
+
+if (enableSwaggerDocs) {
+  app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, {
+      explorer: true,
+    }),
+  );
+}
 
 app.use("/api/v1", router);
 
