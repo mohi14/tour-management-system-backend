@@ -12,7 +12,6 @@ const env_1 = require("./app/config/env");
 const express_session_1 = __importDefault(require("express-session"));
 const passport_1 = __importDefault(require("passport"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const path_1 = __importDefault(require("path"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_1 = require("./app/config/swagger");
 require("./app/config/passport");
@@ -42,15 +41,13 @@ if (enableSwaggerDocs) {
     }));
 }
 app.use("/api/v1", routes_1.router);
-app.set("view engine", "ejs");
-app.set("views", path_1.default.join(__dirname, "app/utils/templates"));
-// app.get("/", (req: Request, res: Response) => {
-//   res.status(200).json({
-//     message: "Welcome to Tour Management System Backend",
-//   });
-// });
 app.get("/", (req, res) => {
-    res.render("home");
+    res.status(200).json({
+        success: true,
+        message: "Tour Management System API is running",
+        docs: "/api-docs",
+        health: "/api/v1/health",
+    });
 });
 app.use(globalErrorHandler_1.globalErrorHandler);
 app.use(notFound_1.default);

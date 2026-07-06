@@ -8,8 +8,8 @@ import expressSession from "express-session";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import path from "path";
-import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "./app/config/swagger";
+// import swaggerUi from "swagger-ui-express";
+// import { swaggerSpec } from "./app/config/swagger";
 import "./app/config/passport";
 
 const app = express();
@@ -32,22 +32,22 @@ app.use(cors({
     credentials: true
 }))
 
-const enableSwaggerDocs =
-  envVars.NODE_ENV !== "production" || process.env.ENABLE_SWAGGER === "true";
+// const enableSwaggerDocs =
+//   envVars.NODE_ENV !== "production" || process.env.ENABLE_SWAGGER === "true";
 
-app.get("/api-docs.json", (_req, res) => {
-  res.json(swaggerSpec);
-});
+// app.get("/api-docs.json", (_req, res) => {
+//   res.json(swaggerSpec);
+// });
 
-if (enableSwaggerDocs) {
-  app.use(
-    "/api-docs",
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerSpec, {
-      explorer: true,
-    }),
-  );
-}
+// if (enableSwaggerDocs) {
+//   app.use(
+//     "/api-docs",
+//     swaggerUi.serve,
+//     swaggerUi.setup(swaggerSpec, {
+//       explorer: true,
+//     }),
+//   );
+// }
 
 app.use("/api/v1", router);
 
