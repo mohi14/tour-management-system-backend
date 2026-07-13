@@ -118,6 +118,10 @@ Swagger UI is enabled automatically outside production, or when `ENABLE_SWAGGER=
 - `/api/v1/auth`
 - `/api/v1/user`
 - `/api/v1/division`
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 - `/api/v1/tour`
 - `/api/v1/booking`
 - `/api/v1/payment`
@@ -143,7 +147,3 @@ src/
     routes/
     utils/
 ```
-
-## License
-
-No license has been specified yet.
